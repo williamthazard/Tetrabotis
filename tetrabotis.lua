@@ -67,6 +67,7 @@
 local extensions = "/home/we/.local/share/SuperCollider/Extensions"
 engine.name = util.file_exists(extensions .. "/FormantTriPTR/FormantTriPTR.sc") and 'Tetrabotis' or nil
 UI = require "ui"
+_lfos = require 'lfo'
 Tetrabotis = include('lib/Tetrabotis_engine')
 sh = hid.connect(1)
 if sh.device then
@@ -576,7 +577,57 @@ function init()
     lfo[i].lfo_targets = lfo_targets
   end
   lfo.init()
-
+  
+  firstwidth_lfo = _lfos:add{min = 0, max = 1}
+  firstphase_lfo = _lfos:add{min = 0, max = 1}
+  firstform_lfo = _lfos:add{min = 200, max = 5000}
+  firstpitch_lfo = _lfos:add{min = 200, max = 5000}
+  secondwidth_lfo = _lfos:add{min = 0, max = 1}
+  secondphase_lfo = _lfos:add{min = 0, max = 1}
+  secondform_lfo = _lfos:add{min = 200, max = 5000}
+  secondpitch_lfo = _lfos:add{min = 200, max = 5000}
+  thirdwidth_lfo = _lfos:add{min = 0, max = 1}
+  thirdphase_lfo = _lfos:add{min = 0, max = 1}
+  thirdform_lfo = _lfos:add{min = 200, max = 5000}
+  thirdpitch_lfo = _lfos:add{min = 200, max = 5000}
+  fourthwidth_lfo = _lfos:add{min = 0, max = 1}
+  fourthphase_lfo = _lfos:add{min = 0, max = 1}
+  fourthform_lfo = _lfos:add{min = 200, max = 5000}
+  fourthpitch_lfo = _lfos:add{min = 200, max = 5000}
+  params:add_group('Tetrabobo LFOs',240)
+  firstwidth_lfo:add_params('firstwidth_lfo', 'firstwidth')
+  firstwidth_lfo:set('action', function(scaled, raw) params:set('Tetrabotis_firstwidth',scaled) end)
+  firstphase_lfo:add_params('firstphase_lfo', 'firstphase')
+  firstphase_lfo:set('action', function(scaled, raw) params:set('Tetrabotis_firstphase',scaled) end)
+  firstform_lfo:add_params('firstform_lfo', 'firstform')
+  firstform_lfo:set('action', function(scaled, raw) params:set('Tetrabotis_firstform',scaled) end)
+  firstpitch_lfo:add_params('firstpitch_lfo', 'firstpitch')
+  firstpitch_lfo:set('action', function(scaled, raw) params:set('Tetrabotis_firstpitch',scaled) end)
+  secondwidth_lfo:add_params('secondwidth_lfo', 'secondwidth')
+  secondwidth_lfo:set('action', function(scaled, raw) params:set('Tetrabotis_secondwidth',scaled) end)
+  secondphase_lfo:add_params('secondphase_lfo', 'secondphase')
+  secondphase_lfo:set('action', function(scaled, raw) params:set('Tetrabotis_secondphase',scaled) end)
+  secondform_lfo:add_params('secondform_lfo', 'secondform')
+  secondform_lfo:set('action', function(scaled, raw) params:set('Tetrabotis_secondform',scaled) end)
+  secondpitch_lfo:add_params('secondpitch_lfo', 'secondpitch')
+  secondpitch_lfo:set('action', function(scaled, raw) params:set('Tetrabotis_secondpitch',scaled) end)
+  thirdwidth_lfo:add_params('thirdwidth_lfo', 'thirdwidth')
+  thirdwidth_lfo:set('action', function(scaled, raw) params:set('Tetrabotis_thirdwidth',scaled) end)
+  thirdphase_lfo:add_params('thirdphase_lfo', 'thirdphase')
+  thirdphase_lfo:set('action', function(scaled, raw) params:set('Tetrabotis_thirdphase',scaled) end)
+  thirdform_lfo:add_params('thirdform_lfo', 'thirdform')
+  thirdform_lfo:set('action', function(scaled, raw) params:set('Tetrabotis_thirdform',scaled) end)
+  thirdpitch_lfo:add_params('thirdpitch_lfo', 'thirdpitch')
+  thirdpitch_lfo:set('action', function(scaled, raw) params:set('Tetrabotis_thirdpitch',scaled) end)
+  fourthwidth_lfo:add_params('fourthwidth_lfo', 'fourthwidth')
+  fourthwidth_lfo:set('action', function(scaled, raw) params:set('Tetrabotis_fourthwidth',scaled) end)
+  fourthphase_lfo:add_params('fourthphase_lfo', 'fourthphase')
+  fourthphase_lfo:set('action', function(scaled, raw) params:set('Tetrabotis_fourthphase',scaled) end)
+  fourthform_lfo:add_params('fourthform_lfo', 'fourthform')
+  fourthform_lfo:set('action', function(scaled, raw) params:set('Tetrabotis_fourthform',scaled) end)
+  fourthpitch_lfo:add_params('fourthpitch_lfo', 'fourthpitch')
+  fourthpitch_lfo:set('action', function(scaled, raw) params:set('Tetrabotis_fourthpitch',scaled) end)
+  
   params:bang()
   softcut.buffer_clear()
   -- timers for screen and grid redraws
