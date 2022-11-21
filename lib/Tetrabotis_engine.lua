@@ -7,27 +7,26 @@ local specs = {
   ["firstform"] = controlspec.FREQ,
   ["firstwidth"] = controlspec.AMP,
   ["firstphase"] = controlspec.PHASE,
-  ["firstamp"] = controlspec.AMP,
+  ["firstchaos"] = controlspec.new(-24, 24, "lin", 0, 0, ""),
   ["panone"] = controlspec.PAN,
   ["secondpitch"] = controlspec.FREQ,
   ["secondform"] = controlspec.FREQ,
   ["secondwidth"] = controlspec.AMP,
   ["secondphase"] = controlspec.PHASE,
-  ["secondamp"] = controlspec.AMP,
+  ["secondchaos"] = controlspec.new(-24, 24, "lin", 0, 0, ""),
   ["pantwo"] = controlspec.PAN,
   ["thirdpitch"] = controlspec.FREQ,
   ["thirdform"] = controlspec.FREQ,
   ["thirdwidth"] = controlspec.AMP,
   ["thirdphase"] = controlspec.PHASE,
-  ["thirdamp"] = controlspec.AMP,
+  ["thirdchaos"] = controlspec.new(-24, 24, "lin", 0, 0, ""),
   ["panthree"] = controlspec.PAN,
   ["fourthpitch"] = controlspec.FREQ,
   ["fourthform"] = controlspec.FREQ,
   ["fourthwidth"] = controlspec.AMP,
   ["fourthphase"] = controlspec.PHASE,
-  ["fourthamp"] = controlspec.AMP,
+  ["fourthchaos"] = controlspec.new(-24, 24, "lin", 0, 0, ""),
   ["panfour"] = controlspec.PAN,
-  ["chaos"] = controlspec.new(-24, 24, "lin", 0, 0, ""),
   ["firstattack"] = controlspec.new(0.003, 3, "exp", 0, 0.003, "s"),
   ["secondattack"] = controlspec.new(0.003, 3, "exp", 0, 0.003, "s"),
   ["thirdattack"] = controlspec.new(0.003, 3, "exp", 0, 0.003, "s"),
@@ -39,7 +38,7 @@ local specs = {
 }
 
 -- this table establishes an order for parameter initialization:
-local param_names = {"firstpitch","firstform","firstwidth","firstphase","firstamp","panone","secondpitch","secondform","secondwidth","secondphase","secondamp","pantwo","thirdpitch","thirdform","thirdwidth","thirdphase","thirdamp","panthree","fourthpitch","fourthform","fourthwidth","fourthphase","fourthamp","panfour","chaos","firstattack","secondattack","thirdattack","fourthattack","firstrelease","secondrelease","thirdrelease","fourthrelease"}
+local param_names = {"firstpitch","firstform","firstwidth","firstphase","firstchaos","panone","secondpitch","secondform","secondwidth","secondphase","secondchaos","pantwo","thirdpitch","thirdform","thirdwidth","thirdphase","thirdchaos","panthree","fourthpitch","fourthform","fourthwidth","fourthphase","fourthchaos","panfour","firstattack","secondattack","thirdattack","fourthattack","firstrelease","secondrelease","thirdrelease","fourthrelease"}
 
 -- initialize parameters:
 function Tetrabotis.add_params()
