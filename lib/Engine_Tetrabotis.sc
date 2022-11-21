@@ -59,7 +59,7 @@ SynthDef("barone",
 		{   arg out,
 			firstfmbus,
 			fourthfmbus,
-			chaos,
+			firstchaos = 0,
 			firstpitch = 440,
 			firstwidth = 0.75,
 			firstform = 440,
@@ -77,7 +77,7 @@ SynthDef("barone",
 			var first_signal = Pan2.ar(
 					SineShaper.ar(
 						FormantTriPTR.ar(firstpitch + (
-							chaos * In.ar(fourthfmbus)),
+							firstchaos * In.ar(fourthfmbus)),
 						firstform,
 						firstwidth,
 						firstphase),
@@ -100,7 +100,7 @@ SynthDef("bartwo",
 		{   arg out,
 			firstfmbus,
 			secondfmbus,
-			chaos,
+			secondchaos = 0,
 			secondpitch = 440,
 			secondwidth = 0.75,
 			secondform = 440,
@@ -118,7 +118,7 @@ SynthDef("bartwo",
 			var second_signal = Pan2.ar(
 					SineShaper.ar(
 						FormantTriPTR.ar(secondpitch + (
-							chaos * In.ar(firstfmbus)),
+							secondchaos * In.ar(firstfmbus)),
 						secondform,
 						secondwidth,
 						secondphase),
@@ -141,7 +141,7 @@ SynthDef("barthree",
 		{   arg out,
 			secondfmbus,
 			thirdfmbus,
-			chaos,
+			thirdchaos = 0,
 			thirdpitch = 440,
 			thirdwidth = 0.75,
 			thirdform = 440,
@@ -159,7 +159,7 @@ SynthDef("barthree",
 			var third_signal = Pan2.ar(
 					SineShaper.ar(
 						FormantTriPTR.ar(thirdpitch + (
-							chaos * In.ar(secondfmbus)),
+							thirdchaos * In.ar(secondfmbus)),
 						thirdform,
 						thirdwidth,
 						thirdphase),
@@ -182,7 +182,7 @@ SynthDef("barfour",
 		{   arg out,
 			thirdfmbus,
 			fourthfmbus,
-			chaos,
+			fourthchaos = 0,
 			fourthpitch = 440,
 			fourthwidth = 0.75,
 			fourthform = 440,
@@ -200,7 +200,7 @@ SynthDef("barfour",
 			var fourth_signal = Pan2.ar(
 					SineShaper.ar(
 						FormantTriPTR.ar(fourthpitch + (
-							chaos * In.ar(thirdfmbus)),
+							fourthchaos * In.ar(thirdfmbus)),
 						fourthform,
 						fourthwidth,
 						fourthphase),
@@ -332,7 +332,10 @@ SynthDef("barfour",
 			\panfour, 0,
 			\fourthattack, 0.3,
 			\fourthrelease, 1,
-			\chaos, 0
+			\firstchaos, 0,
+			\secondchaos, 0,
+			\thirdchaos, 0,
+			\fourthchaos, 0
 		]);
 
 		params.keysDo({ arg key;
