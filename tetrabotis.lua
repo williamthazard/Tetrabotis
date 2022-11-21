@@ -623,7 +623,7 @@ end
 function shnth.major(n, z)
   if n == 1 then
     if z == 1 then
-      fisthalving = true
+      firsthalving = true
       else firsthalving = false
     end
   end
