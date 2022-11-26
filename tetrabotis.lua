@@ -2,13 +2,13 @@
 --          tetrabotis
 --      stereo tape     _
 --        delay/         | \
---          looper        | |
---                         | |
+--          looper/       | |
+--         tetrax          | |
 --    |\                   | |
 --   /, ~\              / /
 --  X     `-.........-------./ /
 --   ~-. ~  ~              |
---      \             /   |
+--      \       IV    /   |
 --       \  /_     ___\ /
 --       | /\ ~~~~~   \ |
 --       | | \           || |
@@ -63,11 +63,7 @@
 --
 -- https://llllllll.co/t/22149
 
-
-local extensions = "/home/we/.local/share/SuperCollider/Extensions"
-engine.name = util.file_exists(extensions .. "/FormantTriPTR/FormantTriPTR.sc") and 'Tetrabotis' or nil
-UI = require "ui"
-_lfos = require 'lfo'
+engine.name = 'Tetrabotis'
 Tetrabotis = include('lib/Tetrabotis_engine')
 sh = hid.connect(1)
 if sh.device then
@@ -508,19 +504,6 @@ local function midi_control(data)
 end
 
 function init()
-  needs_restart = false
-  local formanttri_files = {"FormantTriPTR.sc", "FormantTriPTR_scsynth.so"}
-  for _,file in pairs(formanttri_files) do
-    if not util.file_exists(extensions .. "/FormantTriPTR/" .. file) then
-      util.os_capture("mkdir " .. extensions .. "/FormantTriPTR")
-      util.os_capture("cp " .. norns.state.path .. "/ignore/" .. file .. " " .. extensions .. "/FormantTriPTR/" .. file)
-      print("installed " .. file)
-      needs_restart = true
-    end
-  end
-  restart_message = UI.Message.new{"please restart norns"}
-  if needs_restart then redraw() return end
-  
   Tetrabotis.add_params() -- adds params via the `.add params()` function defined in Tetrabotis_engine.lua
   params:bang()
   print("tetrabotis")
@@ -578,56 +561,6 @@ function init()
   end
   lfo.init()
   
-  firstwidth_lfo = _lfos:add{min = 0, max = 1}
-  firstphase_lfo = _lfos:add{min = 0, max = 1}
-  firstform_lfo = _lfos:add{min = 200, max = 5000}
-  firstpitch_lfo = _lfos:add{min = 200, max = 5000}
-  secondwidth_lfo = _lfos:add{min = 0, max = 1}
-  secondphase_lfo = _lfos:add{min = 0, max = 1}
-  secondform_lfo = _lfos:add{min = 200, max = 5000}
-  secondpitch_lfo = _lfos:add{min = 200, max = 5000}
-  thirdwidth_lfo = _lfos:add{min = 0, max = 1}
-  thirdphase_lfo = _lfos:add{min = 0, max = 1}
-  thirdform_lfo = _lfos:add{min = 200, max = 5000}
-  thirdpitch_lfo = _lfos:add{min = 200, max = 5000}
-  fourthwidth_lfo = _lfos:add{min = 0, max = 1}
-  fourthphase_lfo = _lfos:add{min = 0, max = 1}
-  fourthform_lfo = _lfos:add{min = 200, max = 5000}
-  fourthpitch_lfo = _lfos:add{min = 200, max = 5000}
-  params:add_group('Tetrabobo LFOs',240)
-  firstwidth_lfo:add_params('firstwidth_lfo', 'firstwidth')
-  firstwidth_lfo:set('action', function(scaled, raw) params:set('Tetrabotis_firstwidth',scaled) end)
-  firstphase_lfo:add_params('firstphase_lfo', 'firstphase')
-  firstphase_lfo:set('action', function(scaled, raw) params:set('Tetrabotis_firstphase',scaled) end)
-  firstform_lfo:add_params('firstform_lfo', 'firstform')
-  firstform_lfo:set('action', function(scaled, raw) params:set('Tetrabotis_firstform',scaled) end)
-  firstpitch_lfo:add_params('firstpitch_lfo', 'firstpitch')
-  firstpitch_lfo:set('action', function(scaled, raw) params:set('Tetrabotis_firstpitch',scaled) end)
-  secondwidth_lfo:add_params('secondwidth_lfo', 'secondwidth')
-  secondwidth_lfo:set('action', function(scaled, raw) params:set('Tetrabotis_secondwidth',scaled) end)
-  secondphase_lfo:add_params('secondphase_lfo', 'secondphase')
-  secondphase_lfo:set('action', function(scaled, raw) params:set('Tetrabotis_secondphase',scaled) end)
-  secondform_lfo:add_params('secondform_lfo', 'secondform')
-  secondform_lfo:set('action', function(scaled, raw) params:set('Tetrabotis_secondform',scaled) end)
-  secondpitch_lfo:add_params('secondpitch_lfo', 'secondpitch')
-  secondpitch_lfo:set('action', function(scaled, raw) params:set('Tetrabotis_secondpitch',scaled) end)
-  thirdwidth_lfo:add_params('thirdwidth_lfo', 'thirdwidth')
-  thirdwidth_lfo:set('action', function(scaled, raw) params:set('Tetrabotis_thirdwidth',scaled) end)
-  thirdphase_lfo:add_params('thirdphase_lfo', 'thirdphase')
-  thirdphase_lfo:set('action', function(scaled, raw) params:set('Tetrabotis_thirdphase',scaled) end)
-  thirdform_lfo:add_params('thirdform_lfo', 'thirdform')
-  thirdform_lfo:set('action', function(scaled, raw) params:set('Tetrabotis_thirdform',scaled) end)
-  thirdpitch_lfo:add_params('thirdpitch_lfo', 'thirdpitch')
-  thirdpitch_lfo:set('action', function(scaled, raw) params:set('Tetrabotis_thirdpitch',scaled) end)
-  fourthwidth_lfo:add_params('fourthwidth_lfo', 'fourthwidth')
-  fourthwidth_lfo:set('action', function(scaled, raw) params:set('Tetrabotis_fourthwidth',scaled) end)
-  fourthphase_lfo:add_params('fourthphase_lfo', 'fourthphase')
-  fourthphase_lfo:set('action', function(scaled, raw) params:set('Tetrabotis_fourthphase',scaled) end)
-  fourthform_lfo:add_params('fourthform_lfo', 'fourthform')
-  fourthform_lfo:set('action', function(scaled, raw) params:set('Tetrabotis_fourthform',scaled) end)
-  fourthpitch_lfo:add_params('fourthpitch_lfo', 'fourthpitch')
-  fourthpitch_lfo:set('action', function(scaled, raw) params:set('Tetrabotis_fourthpitch',scaled) end)
-  
   params:bang()
   softcut.buffer_clear()
   -- timers for screen and grid redraws
@@ -644,26 +577,23 @@ function init()
  audio.level_eng_cut(0)
 end
 
-function shnth.minor(n, z)
+function shnth.major(n, z)
   if n == 1 then 
     if z == 1 then 
       firstdoubling = true
       else firstdoubling = false
     end
-  end
-  if n == 2 then
+  elseif n == 2 then
     if z == 1 then
       seconddoubling = true
       else seconddoubling = false
     end
-  end
-  if n == 3 then
+  elseif n == 3 then
     if z == 1 then
       thirddoubling = true
       else thirddoubling = false
     end
-  end
-  if n == 4 then
+  elseif n == 4 then
     if z == 1 then
       fourthdoubling = true
       else fourthdoubling = false
@@ -671,26 +601,23 @@ function shnth.minor(n, z)
   end
 end
 
-function shnth.major(n, z)
+function shnth.minor(n, z)
   if n == 1 then
     if z == 1 then
       firsthalving = true
       else firsthalving = false
     end
-  end
-  if n == 2 then
+  elseif n == 2 then
     if z == 1 then
       secondhalving = true
       else secondhalving = false
     end
-  end
-  if n == 3 then
+  elseif n == 3 then
     if z == 1 then
       thirdhalving = true
       else thirdhalving = false
     end
-  end
-  if n == 4 then
+  elseif n == 4 then
     if z == 1 then
       fourthhalving = true
       else fourthhalving = false
@@ -701,56 +628,48 @@ end
 function shnth.bar(n, d)
   if d > 0.2 or d < -0.2 then
       if n==1 then
-        params:set('Tetrabotis_firstattack',util.linlin(-1,1,0.03,2,d))
-        params:set('Tetrabotis_firstrelease',util.linlin(-1,1,0.03,2,d))
         if firstdoubling then 
-          params:set('Tetrabotis_firstpitch',(params:get('Tetrabotis_firstpitch')*2))
-          Tetrabotis.firstbartrig(params:get('Tetrabotis_firstpitch'))
-          params:set('Tetrabotis_firstpitch',(params:get('Tetrabotis_firstpitch')/2))
+          params:set('Tetrabotis_time_0',(params:get('Tetrabotis_time_0')*2))
+          Tetrabotis.trig(util.linlin(-1,1,0.03,2,d), 1)
+          params:set('Tetrabotis_time_0',(params:get('Tetrabotis_time_0')/2))
         elseif firsthalving then
-          params:set('Tetrabotis_firstpitch',(params:get('Tetrabotis_firstpitch')/2))
-          Tetrabotis.firstbartrig(params:get('Tetrabotis_firstpitch'))
-          params:set('Tetrabotis_firstpitch',(params:get('Tetrabotis_firstpitch')*2))
-        else Tetrabotis.firstbartrig(params:get('Tetrabotis_firstpitch')) 
+          params:set('Tetrabotis_time_0',(params:get('Tetrabotis_time_0')/2))
+          Tetrabotis.trig(util.linlin(-1,1,0.03,2,d), 1)
+          params:set('Tetrabotis_time_0',(params:get('Tetrabotis_time_0')*2))
+        else Tetrabotis.trig(util.linlin(-1,1,0.03,2,d), 1) 
           end
       elseif n==2 then
-        params:set('Tetrabotis_secondattack',util.linlin(-1,1,0.03,2,d))
-        params:set('Tetrabotis_secondrelease',util.linlin(-1,1,0.03,2,d))
         if seconddoubling then 
-          params:set('Tetrabotis_secondpitch',(params:get('Tetrabotis_secondpitch')*2))
-          Tetrabotis.secondbartrig(params:get('Tetrabotis_secondpitch'))
-          params:set('Tetrabotis_secondpitch',(params:get('Tetrabotis_secondpitch')/2))
+          params:set('Tetrabotis_time_1',(params:get('Tetrabotis_time_1')*2))
+          Tetrabotis.trig(util.linlin(-1,1,0.03,2,d), 2)
+          params:set('Tetrabotis_time_1',(params:get('Tetrabotis_time_1')/2))
         elseif secondhalving then
-          params:set('Tetrabotis_secondpitch',(params:get('Tetrabotis_secondpitch')/2))
-          Tetrabotis.secondbartrig(params:get('Tetrabotis_secondpitch'))
-          params:set('Tetrabotis_secondpitch',(params:get('Tetrabotis_secondpitch')*2))
-        else Tetrabotis.secondbartrig(params:get('Tetrabotis_secondpitch')) 
+          params:set('Tetrabotis_time_1',(params:get('Tetrabotis_time_1')/2))
+          Tetrabotis.trig(util.linlin(-1,1,0.03,2,d), 2)
+          params:set('Tetrabotis_time_1',(params:get('Tetrabotis_time_1')*2))
+        else Tetrabotis.trig(util.linlin(-1,1,0.03,2,d), 2) 
           end
       elseif n==3 then
-        params:set('Tetrabotis_thirdattack',util.linlin(-1,1,0.03,2,d))
-        params:set('Tetrabotis_thirdrelease',util.linlin(-1,1,0.03,2,d))
         if thirddoubling then 
-          params:set('Tetrabotis_thirdpitch',(params:get('Tetrabotis_thirdpitch')*2))
-          Tetrabotis.thirdbartrig(params:get('Tetrabotis_thirdpitch'))
-          params:set('Tetrabotis_thirdpitch',(params:get('Tetrabotis_thirdpitch')/2))
+          params:set('Tetrabotis_time_2',(params:get('Tetrabotis_time_2')*2))
+          Tetrabotis.trig(util.linlin(-1,1,0.03,2,d), 3)
+          params:set('Tetrabotis_time_2',(params:get('Tetrabotis_time_2')/2))
         elseif thirdhalving then
-          params:set('Tetrabotis_thirdpitch',(params:get('Tetrabotis_thirdpitch')/2))
-          Tetrabotis.thirdbartrig(params:get('Tetrabotis_thirdpitch'))
-          params:set('Tetrabotis_thirdpitch',(params:get('Tetrabotis_thirdpitch')*2))
-        else Tetrabotis.thirdbartrig(params:get('Tetrabotis_thirdpitch')) 
+          params:set('Tetrabotis_time_2',(params:get('Tetrabotis_time_2')/2))
+          Tetrabotis.trig(util.linlin(-1,1,0.03,2,d), 3)
+          params:set('Tetrabotis_time_2',(params:get('Tetrabotis_time_2')*2))
+        else Tetrabotis.trig(util.linlin(-1,1,0.03,2,d), 3) 
           end
       elseif n==4 then
-        params:set('Tetrabotis_fourthattack',util.linlin(-1,1,0.03,2,d))
-        params:set('Tetrabotis_fourthrelease',util.linlin(-1,1,0.03,2,d))
         if fourthdoubling then 
-          params:set('Tetrabotis_fourthpitch',(params:get('Tetrabotis_fourthpitch')*2))
-          Tetrabotis.fourthbartrig(params:get('Tetrabotis_fourthpitch'))
-          params:set('Tetrabotis_fourthpitch',(params:get('Tetrabotis_fourthpitch')/2))
+          params:set('Tetrabotis_time_3',(params:get('Tetrabotis_time_3')*2))
+          Tetrabotis.trig(util.linlin(-1,1,0.03,2,d), 4)
+          params:set('Tetrabotis_time_3',(params:get('Tetrabotis_time_3')/2))
         elseif fourthhalving then
-          params:set('Tetrabotis_fourthpitch',(params:get('Tetrabotis_fourthpitch')/2))
-          Tetrabotis.fourthbartrig(params:get('Tetrabotis_fourthpitch'))
-          params:set('Tetrabotis_fourthpitch',(params:get('Tetrabotis_fourthpitch')*2))
-        else Tetrabotis.fourthbartrig(params:get('Tetrabotis_fourthpitch')) 
+          params:set('Tetrabotis_time_3',(params:get('Tetrabotis_time_3')/2))
+          Tetrabotis.trig(util.linlin(-1,1,0.03,2,d), 4)
+          params:set('Tetrabotis_time_3',(params:get('Tetrabotis_time_3')*2))
+        else Tetrabotis.trig(util.linlin(-1,1,0.03,2,d), 4) 
           end
     end
   end
