@@ -72,14 +72,13 @@ if sh.device then
   else shnth = {}
 end
 
-firstdoubling = false
-firsthalving = false
-seconddoubling = false
-secondhalving = false
-thirddoubling = false
-thirdhalving = false
-fourthdoubling = false
-fourthhalving = false
+doubling = {}
+halving = {}
+
+for i=1,4 do
+  doubling[i] = false
+  halving[i] = false
+end
 
 local g = grid.connect()
 local g_alt = false
@@ -578,99 +577,42 @@ function init()
 end
 
 function shnth.major(n, z)
-  if n == 1 then 
-    if z == 1 then 
-      firstdoubling = true
-      else firstdoubling = false
-    end
-  elseif n == 2 then
-    if z == 1 then
-      seconddoubling = true
-      else seconddoubling = false
-    end
-  elseif n == 3 then
-    if z == 1 then
-      thirddoubling = true
-      else thirddoubling = false
-    end
-  elseif n == 4 then
-    if z == 1 then
-      fourthdoubling = true
-      else fourthdoubling = false
+  for i=1,4 do
+    if n==i then
+      if z==1 then
+        doubling[i] = true
+        else doubling[i] = false
+      end
     end
   end
 end
 
 function shnth.minor(n, z)
-  if n == 1 then
-    if z == 1 then
-      firsthalving = true
-      else firsthalving = false
-    end
-  elseif n == 2 then
-    if z == 1 then
-      secondhalving = true
-      else secondhalving = false
-    end
-  elseif n == 3 then
-    if z == 1 then
-      thirdhalving = true
-      else thirdhalving = false
-    end
-  elseif n == 4 then
-    if z == 1 then
-      fourthhalving = true
-      else fourthhalving = false
+  for i=1,4 do
+    if n==i then
+      if z==1 then
+        halving[i] = true
+        else halving[i] = false
+      end
     end
   end
 end
 
 function shnth.bar(n, d)
   if d > 0.2 or d < -0.2 then
-      if n==1 then
-        if firstdoubling then 
-          params:set('Tetrabotis_time_0',(params:get('Tetrabotis_time_0')*2))
-          Tetrabotis.trig(util.linlin(-1,1,0.03,2,d), 1)
-          params:set('Tetrabotis_time_0',(params:get('Tetrabotis_time_0')/2))
-        elseif firsthalving then
-          params:set('Tetrabotis_time_0',(params:get('Tetrabotis_time_0')/2))
-          Tetrabotis.trig(util.linlin(-1,1,0.03,2,d), 1)
-          params:set('Tetrabotis_time_0',(params:get('Tetrabotis_time_0')*2))
-        else Tetrabotis.trig(util.linlin(-1,1,0.03,2,d), 1) 
-          end
-      elseif n==2 then
-        if seconddoubling then 
-          params:set('Tetrabotis_time_1',(params:get('Tetrabotis_time_1')*2))
-          Tetrabotis.trig(util.linlin(-1,1,0.03,2,d), 2)
-          params:set('Tetrabotis_time_1',(params:get('Tetrabotis_time_1')/2))
-        elseif secondhalving then
-          params:set('Tetrabotis_time_1',(params:get('Tetrabotis_time_1')/2))
-          Tetrabotis.trig(util.linlin(-1,1,0.03,2,d), 2)
-          params:set('Tetrabotis_time_1',(params:get('Tetrabotis_time_1')*2))
-        else Tetrabotis.trig(util.linlin(-1,1,0.03,2,d), 2) 
-          end
-      elseif n==3 then
-        if thirddoubling then 
-          params:set('Tetrabotis_time_2',(params:get('Tetrabotis_time_2')*2))
-          Tetrabotis.trig(util.linlin(-1,1,0.03,2,d), 3)
-          params:set('Tetrabotis_time_2',(params:get('Tetrabotis_time_2')/2))
-        elseif thirdhalving then
-          params:set('Tetrabotis_time_2',(params:get('Tetrabotis_time_2')/2))
-          Tetrabotis.trig(util.linlin(-1,1,0.03,2,d), 3)
-          params:set('Tetrabotis_time_2',(params:get('Tetrabotis_time_2')*2))
-        else Tetrabotis.trig(util.linlin(-1,1,0.03,2,d), 3) 
-          end
-      elseif n==4 then
-        if fourthdoubling then 
-          params:set('Tetrabotis_time_3',(params:get('Tetrabotis_time_3')*2))
-          Tetrabotis.trig(util.linlin(-1,1,0.03,2,d), 4)
-          params:set('Tetrabotis_time_3',(params:get('Tetrabotis_time_3')/2))
-        elseif fourthhalving then
-          params:set('Tetrabotis_time_3',(params:get('Tetrabotis_time_3')/2))
-          Tetrabotis.trig(util.linlin(-1,1,0.03,2,d), 4)
-          params:set('Tetrabotis_time_3',(params:get('Tetrabotis_time_3')*2))
-        else Tetrabotis.trig(util.linlin(-1,1,0.03,2,d), 4) 
-          end
+    for i=1,4 do
+      if n==i then
+        if doubling[i] then
+          params:set('Tetrabotis_time_' .. (i - 1),(params:get('Tetrabotis_time_' .. (i - 1))*2))
+          Tetrabotis.trig(util.linlin(-1,1,0.03,2,d),i)
+          params:set('Tetrabotis_time_' .. (i - 1),(params:get('Tetrabotis_time_' .. (i - 1))/2))
+        elseif halving[i] then
+          params:set('Tetrabotis_time_' .. (i - 1),(params:get('Tetrabotis_time_' .. (i - 1))/2))
+          Tetrabotis.trig(util.linlin(-1,1,0.03,2,d),i)
+          params:set('Tetrabotis_time_' .. (i - 1),(params:get('Tetrabotis_time_' .. (i - 1))*2))
+          else Tetrabotis.trig(util.linlin(-1,1,0.03,2,d),i)
+        end
+      end
     end
   end
 end
